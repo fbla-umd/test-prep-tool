@@ -7,6 +7,7 @@ import axios from "axios";
 
 export async function POST(req: Request, res: Response) {
   try {
+    // Check if the user is authenticated
     const session = await getAuthSession();
     if (!session?.user) {
       return NextResponse.json(
@@ -16,8 +17,12 @@ export async function POST(req: Request, res: Response) {
         }
       );
     }
+
+    // Parse the request body and validate it against the schema
     const body = await req.json();
     const { topic, type, amount } = quizCreationSchema.parse(body);
+
+    // Create a new game record in the database
     const game = await prisma.game.create({
       data: {
         gameType: type,
@@ -26,6 +31,8 @@ export async function POST(req: Request, res: Response) {
         topic,
       },
     });
+
+    // Update or create a topic count record
     await prisma.topic_count.upsert({
       where: {
         topic,
@@ -41,6 +48,7 @@ export async function POST(req: Request, res: Response) {
       },
     });
 
+    // Fetch questions from an external API
     const { data } = await axios.post(
       `${process.env.API_URL as string}/api/questions`,
       {
@@ -50,6 +58,7 @@ export async function POST(req: Request, res: Response) {
       }
     );
 
+    // Handle multiple-choice questions
     if (type === "mcq") {
       type mcqQuestion = {
         question: string;
@@ -59,8 +68,9 @@ export async function POST(req: Request, res: Response) {
         option3: string;
       };
 
+      // Prepare the data for multiple-choice questions
       const manyData = data.questions.map((question: mcqQuestion) => {
-        // mix up the options lol
+        // Randomize the order of the options
         const options = [
           question.option1,
           question.option2,
@@ -76,14 +86,19 @@ export async function POST(req: Request, res: Response) {
         };
       });
 
+      // Insert multiple-choice questions into the database
       await prisma.question.createMany({
         data: manyData,
       });
-    } else if (type === "open_ended") {
+    } 
+    // Handle open-ended questions
+    else if (type === "open_ended") {
       type openQuestion = {
         question: string;
         answer: string;
       };
+
+      // Insert open-ended questions into the database
       await prisma.question.createMany({
         data: data.questions.map((question: openQuestion) => {
           return {
@@ -96,8 +111,10 @@ export async function POST(req: Request, res: Response) {
       });
     }
 
+    // Return the game ID as a response
     return NextResponse.json({ gameId: game.id }, { status: 200 });
   } catch (error) {
+    // Handle validation errors from Zod
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: error.issues },
@@ -106,6 +123,7 @@ export async function POST(req: Request, res: Response) {
         }
       );
     } else {
+      // Handle unexpected errors
       return NextResponse.json(
         { error: "An unexpected error occurred." },
         {
@@ -115,8 +133,10 @@ export async function POST(req: Request, res: Response) {
     }
   }
 }
+
 export async function GET(req: Request, res: Response) {
   try {
+    // Check if the user is authenticated
     const session = await getAuthSession();
     if (!session?.user) {
       return NextResponse.json(
@@ -126,6 +146,8 @@ export async function GET(req: Request, res: Response) {
         }
       );
     }
+
+    // Extract the game ID from the query parameters
     const url = new URL(req.url);
     const gameId = url.searchParams.get("gameId");
     if (!gameId) {
@@ -137,6 +159,7 @@ export async function GET(req: Request, res: Response) {
       );
     }
 
+    // Fetch the game and its associated questions from the database
     const game = await prisma.game.findUnique({
       where: {
         id: gameId,
@@ -145,6 +168,8 @@ export async function GET(req: Request, res: Response) {
         questions: true,
       },
     });
+
+    // Return a 404 response if the game is not found
     if (!game) {
       return NextResponse.json(
         { error: "Game not found." },
@@ -154,6 +179,7 @@ export async function GET(req: Request, res: Response) {
       );
     }
 
+    // Return the game data as a response
     return NextResponse.json(
       { game },
       {
@@ -161,6 +187,7 @@ export async function GET(req: Request, res: Response) {
       }
     );
   } catch (error) {
+    // Handle unexpected errors
     return NextResponse.json(
       { error: "An unexpected error occurred." },
       {

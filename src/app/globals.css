@@ -1,78 +1,82 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
+/* Define custom CSS variables for light and dark themes */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
- 
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
- 
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
- 
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
- 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
- 
-    --primary: 220.9 39.3% 11%;
-    --primary-foreground: 210 20% 98%;
- 
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
- 
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
- 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
- 
-    --ring: 217.9 10.6% 64.9%;
- 
-    --radius: 0.5rem;
+    /* Light theme variables */
+    --background: 0 0% 100%; /* White background */
+    --foreground: 224 71.4% 4.1%; /* Dark text color */
+
+    --muted: 220 14.3% 95.9%; /* Muted background color */
+    --muted-foreground: 220 8.9% 46.1%; /* Muted text color */
+
+    --popover: 0 0% 100%; /* Popover background color */
+    --popover-foreground: 224 71.4% 4.1%; /* Popover text color */
+
+    --card: 0 0% 100%; /* Card background color */
+    --card-foreground: 224 71.4% 4.1%; /* Card text color */
+
+    --border: 220 13% 91%; /* Border color */
+    --input: 220 13% 91%; /* Input field background color */
+
+    --primary: 220.9 39.3% 11%; /* Primary color */
+    --primary-foreground: 210 20% 98%; /* Primary text color */
+
+    --secondary: 220 14.3% 95.9%; /* Secondary color */
+    --secondary-foreground: 220.9 39.3% 11%; /* Secondary text color */
+
+    --accent: 220 14.3% 95.9%; /* Accent color */
+    --accent-foreground: 220.9 39.3% 11%; /* Accent text color */
+
+    --destructive: 0 84.2% 60.2%; /* Destructive action color */
+    --destructive-foreground: 210 20% 98%; /* Destructive text color */
+
+    --ring: 217.9 10.6% 64.9%; /* Focus ring color */
+
+    --radius: 0.5rem; /* Border radius for rounded elements */
   }
- 
+
   .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
- 
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
- 
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
- 
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
- 
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
- 
-    --primary: 210 20% 98%;
-    --primary-foreground: 220.9 39.3% 11%;
- 
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
- 
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
- 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
- 
-    --ring: 215 27.9% 16.9%;
+    /* Dark theme variables */
+    --background: 224 71.4% 4.1%; /* Dark background */
+    --foreground: 210 20% 98%; /* Light text color */
+
+    --muted: 215 27.9% 16.9%; /* Muted background color */
+    --muted-foreground: 217.9 10.6% 64.9%; /* Muted text color */
+
+    --popover: 224 71.4% 4.1%; /* Popover background color */
+    --popover-foreground: 210 20% 98%; /* Popover text color */
+
+    --card: 224 71.4% 4.1%; /* Card background color */
+    --card-foreground: 210 20% 98%; /* Card text color */
+
+    --border: 215 27.9% 16.9%; /* Border color */
+    --input: 215 27.9% 16.9%; /* Input field background color */
+
+    --primary: 210 20% 98%; /* Primary color */
+    --primary-foreground: 220.9 39.3% 11%; /* Primary text color */
+
+    --secondary: 215 27.9% 16.9%; /* Secondary color */
+    --secondary-foreground: 210 20% 98%; /* Secondary text color */
+
+    --accent: 215 27.9% 16.9%; /* Accent color */
+    --accent-foreground: 210 20% 98%; /* Accent text color */
+
+    --destructive: 0 62.8% 30.6%; /* Destructive action color */
+    --destructive-foreground: 0 85.7% 97.3%; /* Destructive text color */
+
+    --ring: 215 27.9% 16.9%; /* Focus ring color */
   }
 }
- 
+
+/* Apply global styles for all elements */
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border; /* Apply border color to all elements */
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground; /* Set background and text colors */
   }
 }

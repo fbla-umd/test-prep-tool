@@ -3,17 +3,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Award, Trophy } from "lucide-react";
 
 type Props = {
-  accuracy: number;
+  accuracy: number; // The accuracy percentage of the quiz
 };
 
 const ResultsCard = ({ accuracy }: Props) => {
   return (
     <Card className="md:col-span-7">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7">
+        {/* Title of the card */}
         <CardTitle className="text-2xl font-bold">Results</CardTitle>
+        {/* Icon for the card */}
         <Award />
       </CardHeader>
       <CardContent className="flex flex-col items-center justify-center h-3/5">
+        {/* Display different messages and icons based on the accuracy */}
         {accuracy > 75 ? (
           <>
             <Trophy className="mr-4" stroke="gold" size={50} />

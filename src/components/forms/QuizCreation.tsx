@@ -120,6 +120,8 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
   const [showLoader, setShowLoader] = React.useState(false);
   const [finishedLoading, setFinishedLoading] = React.useState(false);
   const { toast } = useToast();
+
+  // Mutation to fetch questions from the server
   const { mutate: getQuestions, isLoading } = useMutation({
     mutationFn: async ({ amount, topic, type }: Input) => {
       const response = await axios.post("/api/game", { amount, topic, type });
@@ -127,6 +129,7 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
     },
   });
 
+  // Initialize the form with default values and validation schema
   const form = useForm<Input>({
     resolver: zodResolver(quizCreationSchema),
     defaultValues: {
@@ -136,6 +139,7 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
     },
   });
 
+  // Handle form submission
   const onSubmit = async (data: Input) => {
     setShowLoader(true);
     getQuestions(data, {
@@ -166,6 +170,7 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
 
   form.watch();
 
+  // Show loading screen if questions are being fetched
   if (showLoader) {
     return <LoadingQuestions finished={finishedLoading} />;
   }
@@ -182,6 +187,7 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              {/* Dropdown for selecting a topic */}
               <FormField
                 control={form.control}
                 name="topic"
@@ -211,6 +217,7 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
                   </FormItem>
                 )}
               />
+              {/* Input for the number of questions */}
               <FormField
                 control={form.control}
                 name="amount"
@@ -238,6 +245,7 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
                 )}
               />
 
+              {/* Buttons to select quiz type */}
               <div className="flex justify-between">
                 <Button
                   variant={
@@ -265,6 +273,7 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
                   <BookOpen className="w-4 h-4 mr-2" /> Open Ended
                 </Button>
               </div>
+              {/* Submit button */}
               <Button disabled={isLoading} type="submit">
                 Submit
               </Button>

@@ -3,25 +3,29 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import { History } from "lucide-react";
-import { Component } from 'lucide-react';
-
+import { Component } from "lucide-react";
 
 type Props = {};
 
 const HistoryCard = (props: Props) => {
   const router = useRouter();
+
   return (
     <Card
       className="hover:cursor-pointer hover:opacity-75"
       onClick={() => {
+        // Navigate to the history page when the card is clicked
         router.push("/history");
       }}
     >
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+        {/* Title of the card */}
         <CardTitle className="text-2xl font-bold">FBLA Resources</CardTitle>
+        {/* Icon for the card */}
         <Component size={28} strokeWidth={2.5} />
       </CardHeader>
       <CardContent>
+        {/* Description of the card */}
         <p className="text-sm text-muted-foreground">
           View more FBLA resources.
         </p>

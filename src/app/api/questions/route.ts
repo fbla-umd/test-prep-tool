@@ -9,13 +9,21 @@ export const maxDuration = 500;
 
 export async function POST(req: Request, res: Response) {
   try {
+    // Get the current user session
     const session = await getAuthSession();
+
+    // Parse the request body and validate it against the schema
     const body = await req.json();
     const { amount, topic, type } = getQuestionsSchema.parse(body);
+
     let questions: any;
+
+    // Generate open-ended questions
     if (type === "open_ended") {
       questions = await strict_output(
-        "You are a helpful test prep FBLA comepetition preperation AI that is able to generate a pair of question and answers, the length of each answer should not be more than 15 words, store all the pairs of answers and questions in a JSON array",
+        // Instruction for the AI to generate open-ended questions and answers
+        "You are a helpful test prep FBLA competition preparation AI that is able to generate a pair of question and answers, the length of each answer should not be more than 15 words, store all the pairs of answers and questions in a JSON array",
+        // Generate a mix of easy, medium, and hard questions
         new Array(amount).fill(
           `You are to generate a random easy, medium, and hard open-ended questions about ${topic}`
         ),
@@ -24,9 +32,13 @@ export async function POST(req: Request, res: Response) {
           answer: "answer with max length of 15 words",
         }
       );
-    } else if (type === "mcq") {
+    } 
+    // Generate multiple-choice questions
+    else if (type === "mcq") {
       questions = await strict_output(
+        // Instruction for the AI to generate MCQ questions and answers
         "You are a helpful FBLA competition preparation AI that is able to generate mcq questions and answers, the length of each answer should not be more than 15 words, store all answers and questions and options in a JSON array",
+        // Generate hard MCQ questions
         new Array(amount).fill(
           `You are to generate a random hard mcq question about ${topic}`
         ),
@@ -39,6 +51,8 @@ export async function POST(req: Request, res: Response) {
         }
       );
     }
+
+    // Return the generated questions as a response
     return NextResponse.json(
       {
         questions: questions,
@@ -48,6 +62,7 @@ export async function POST(req: Request, res: Response) {
       }
     );
   } catch (error) {
+    // Handle validation errors from Zod
     if (error instanceof ZodError) {
       return NextResponse.json(
         { error: error.issues },
@@ -56,6 +71,7 @@ export async function POST(req: Request, res: Response) {
         }
       );
     } else {
+      // Handle unexpected errors
       console.error("elle gpt error", error);
       return NextResponse.json(
         { error: "An unexpected error occurred." },

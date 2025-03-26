@@ -1,4 +1,5 @@
-"use client";
+"use client"; // Ensures this component runs on the client side
+
 import React from "react";
 
 import {
@@ -9,21 +10,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Question } from "@prisma/client";
+} from "@/components/ui/table"; // Import table components for UI rendering
+
+import { Question } from "@prisma/client"; // Import Question type from Prisma schema
+
+// Define props type, expecting an array of Question objects
 type Props = {
   questions: Question[];
 };
 
+// QuestionsList component: Displays a table of quiz questions, user answers, and correctness
 const QuestionsList = ({ questions }: Props) => {
   return (
     <Table className="mt-4">
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[10px]">No.</TableHead>
-          <TableHead>Question & Correct Answer</TableHead>
-          <TableHead>Your Answer</TableHead>
+          <TableHead className="w-[10px]">No.</TableHead> {/* Column for question number */}
+          <TableHead>Question & Correct Answer</TableHead> {/* Column for the question and answer */}
+          <TableHead>Your Answer</TableHead> {/* Column for the user's answer */}
 
+          {/* Display "Accuracy" column only for open-ended questions */}
           {questions[0].questionType === "open_ended" && (
             <TableHead className="w-[10px] text-right">Accuracy</TableHead>
           )}
@@ -31,6 +37,7 @@ const QuestionsList = ({ questions }: Props) => {
       </TableHeader>
       <TableBody>
         <>
+          {/* Iterate over the questions array to generate table rows */}
           {questions.map(
             (
               { answer, question, userAnswer, percentageCorrect, isCorrect },
@@ -38,12 +45,17 @@ const QuestionsList = ({ questions }: Props) => {
             ) => {
               return (
                 <TableRow key={index}>
+                  {/* Display question index (starting from 1) */}
                   <TableCell className="font-medium">{index + 1}</TableCell>
+
+                  {/* Display the question and the correct answer */}
                   <TableCell>
                     {question} <br />
                     <br />
                     <span className="font-semibold">{answer}</span>
                   </TableCell>
+
+                  {/* Display user's answer with conditional styling based on correctness */}
                   {questions[0].questionType === "open_ended" ? (
                     <TableCell className={`font-semibold`}>
                       {userAnswer}
@@ -58,6 +70,7 @@ const QuestionsList = ({ questions }: Props) => {
                     </TableCell>
                   )}
 
+                  {/* Display accuracy percentage if available */}
                   {percentageCorrect && (
                     <TableCell className="text-right">
                       {percentageCorrect}

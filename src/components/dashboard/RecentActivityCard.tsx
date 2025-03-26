@@ -15,26 +15,34 @@ import { prisma } from "@/lib/db";
 type Props = {};
 
 const RecentActivityCard = async (props: Props) => {
+  // Check if the user is authenticated
   const session = await getAuthSession();
   if (!session?.user) {
+    // Redirect to the homepage if the user is not logged in
     return redirect("/");
   }
+
+  // Fetch the total number of games played by the user
   const games_count = await prisma.game.count({
     where: {
       userId: session.user.id,
     },
   });
+
   return (
     <Card className="col-span-4 lg:col-span-3">
       <CardHeader>
+        {/* Title of the card */}
         <CardTitle className="text-2xl font-bold">
           <Link href="/history">Recent Activity</Link>
         </CardTitle>
+        {/* Description showing the total number of quizzes played */}
         <CardDescription>
           You have played a total of {games_count} quizzes.
         </CardDescription>
       </CardHeader>
       <CardContent className="max-h-[580px] overflow-scroll">
+        {/* Display the history of recent activity */}
         <HistoryComponent limit={10} userId={session.user.id} />
       </CardContent>
     </Card>
