@@ -1,16 +1,16 @@
-import ResourcesCard from "@/components/dashboard/ResourcesCard";
-import QuizMeCard from "@/components/dashboard/QuizMeCard";
-import RecentActivityCard from "@/components/dashboard/RecentActivityCard";
-import { getAuthSession } from "@/lib/nextauth";
-import { redirect } from "next/navigation";
-import React from "react";
+import ResourcesCard from '@/components/dashboard/ResourcesCard';
+import QuizMeCard from '@/components/dashboard/QuizMeCard';
+import RecentActivityCard from '@/components/dashboard/RecentActivityCard';
+import { getAuthSession } from '@/lib/nextauth';
+import { redirect } from 'next/navigation';
+import React from 'react';
 
 type Props = {};
 
 // Metadata for the page (used by Next.js for SEO)
 export const metadata = {
-  title: "Dashboard | FBLA-AI",
-  description: "Practice your FBLA knowledge!",
+  title: 'Dashboard | FBLA-AI',
+  description: 'Practice your FBLA knowledge!',
 };
 
 // Async Dashboard component
@@ -20,7 +20,7 @@ const Dasboard = async (props: Props) => {
 
   // If there is no user session, redirect to the home page
   if (!session?.user) {
-    redirect("/");
+    redirect('/');
   }
 
   return (
@@ -37,7 +37,7 @@ const Dasboard = async (props: Props) => {
         {/* ResourcesCard: Component for accessing learning resources */}
         <ResourcesCard />
       </div>
-      
+
       {/* Separate grid row for RecentActivityCard */}
       <div className="grid gap-4 mt-4 md:grid-cols-2">
         {/* RecentActivityCard: Displays recent user activity */}
@@ -48,3 +48,5 @@ const Dasboard = async (props: Props) => {
 };
 
 export default Dasboard;
+
+// hey this was added with git
