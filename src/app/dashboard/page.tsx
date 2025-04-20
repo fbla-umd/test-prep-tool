@@ -48,5 +48,3 @@ const Dasboard = async (props: Props) => {
 };
 
 export default Dasboard;
-
-// hey this was added with git
